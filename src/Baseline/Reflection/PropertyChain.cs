@@ -57,15 +57,14 @@ namespace Baseline.Reflection
                 var last = _valueGetters.Last();
                 if (last is MethodValueGetter || last is IndexerValueGetter)
                 {
-                    var nextUp = _chain.Reverse().Skip(1).FirstOrDefault() as PropertyValueGetter;
-                    if (nextUp != null)
+                    if (_chain.Reverse().Skip(1).FirstOrDefault() is PropertyValueGetter nextUp)
                     {
                         return nextUp.PropertyInfo.PropertyType;
                     }
                 }
 
-                var propertyGetter = _chain.Last() as PropertyValueGetter;
-                if (propertyGetter != null) return propertyGetter.PropertyInfo.PropertyType;
+                if (_chain.Last() is PropertyValueGetter propertyGetter) return propertyGetter.PropertyInfo.PropertyType;
+                
                 return InnerProperty?.DeclaringType!;
             }
         }

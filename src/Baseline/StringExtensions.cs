@@ -105,7 +105,7 @@ namespace Baseline
             return !string.IsNullOrEmpty(stringValue);
         }
 
-        public static void IsNotEmpty([NotNullWhen(true)] this string stringValue, Action<string> action)
+        public static void IsNotEmpty([NotNullWhen(true)] this string? stringValue, Action<string> action)
         {
             if (stringValue.IsNotEmpty())
                 action(stringValue);
