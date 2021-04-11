@@ -23,13 +23,10 @@ namespace Baseline.Reflection
             _valueGetters = valueGetters;
         }
 
-        public IValueGetter[] ValueGetters
-        {
-            get { return _valueGetters; }
-        }
+        public IValueGetter[] ValueGetters => _valueGetters;
 
 
-        public void SetValue(object target, object propertyValue)
+        public void SetValue(object? target, object propertyValue)
         {
             target = findInnerMostTarget(target);
             if (target == null)
@@ -40,7 +37,7 @@ namespace Baseline.Reflection
             setValueOnInnerObject(target, propertyValue);
         }
 
-        public object GetValue(object target)
+        public object? GetValue(object? target)
         {
             target = findInnerMostTarget(target);
 
@@ -69,7 +66,7 @@ namespace Baseline.Reflection
 
                 var propertyGetter = _chain.Last() as PropertyValueGetter;
                 if (propertyGetter != null) return propertyGetter.PropertyInfo.PropertyType;
-                return InnerProperty != null ? InnerProperty.DeclaringType : null;
+                return InnerProperty?.DeclaringType!;
             }
         }
 
@@ -79,29 +76,23 @@ namespace Baseline.Reflection
                 var last = _valueGetters.Last();
                 if (last is PropertyValueGetter) return last.Name;
 
-                var previous = _valueGetters[_valueGetters.Count() - 2];
+                var previous = _valueGetters[_valueGetters.Length - 2];
                 return previous.Name + last.Name;
             }
         }
 
-        public Type PropertyType
-        {
-            get { return _valueGetters.Last().ValueType; }
-        }
+        public Type PropertyType => _valueGetters.Last().ValueType;
 
-        public PropertyInfo InnerProperty
+        public PropertyInfo? InnerProperty
         {
             get
             {
                 var last = _valueGetters.Last() as PropertyValueGetter;
-                return last == null ? null : last.PropertyInfo;
+                return last?.PropertyInfo;
             }
         }
 
-        public Type DeclaringType
-        {
-            get { return _chain[0].DeclaringType; }
-        }
+        public Type DeclaringType => _chain[0].DeclaringType;
 
         public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
         {
@@ -159,11 +150,11 @@ namespace Baseline.Reflection
         }
 
 
-        protected object findInnerMostTarget(object target)
+        protected object? findInnerMostTarget(object? target)
         {
             foreach (IValueGetter info in _chain)
             {
-                target = info.GetValue(target);
+                target = info.GetValue(target!);
                 if (target == null)
                 {
                     return null;
@@ -179,7 +170,7 @@ namespace Baseline.Reflection
             return _chain.First().DeclaringType.FullName + _chain.Select(x => x.Name).Join(".");
         }
 
-        public bool Equals(PropertyChain other)
+        public bool Equals(PropertyChain? other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -187,7 +178,7 @@ namespace Baseline.Reflection
             return _valueGetters.SequenceEqual(other._valueGetters);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
