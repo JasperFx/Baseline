@@ -38,7 +38,7 @@ namespace Baseline
             return (T) target;
         }
 
-        public static bool IsNullableOfT(this Type theType)
+        public static bool IsNullableOfT(this Type? theType)
         {
             if (theType == null) return false;
 
@@ -57,7 +57,7 @@ namespace Baseline
                    (theType.IsNullableOfT() && theType.GetGenericArguments()[0] == otherType);
         }
 
-        public static bool CanBeCastTo<T>(this Type type)
+        public static bool CanBeCastTo<T>(this Type? type)
         {
             if (type == null) return false;
             var destinationType = typeof(T);
@@ -65,7 +65,7 @@ namespace Baseline
             return CanBeCastTo(type, destinationType);
         }
 
-        public static bool CanBeCastTo(this Type type, Type destinationType)
+        public static bool CanBeCastTo(this Type? type, Type destinationType)
         {
             if (type == null) return false;
             if (type == destinationType) return true;
@@ -162,7 +162,7 @@ namespace Baseline
             return typeInfo.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
-        public static bool Closes(this Type type, Type openType)
+        public static bool Closes(this Type? type, Type openType)
         {
             if (type == null) return false;
 
