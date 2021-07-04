@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 
 // ReSharper disable once InconsistentNaming
+#nullable disable
 
 namespace Baseline.ImTools
 {
